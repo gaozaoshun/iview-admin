@@ -28,12 +28,19 @@ export default {
       'getUserInfo'
     ]),
     handleSubmit ({ userName, password }) {
-      this.handleLogin({ userName, password }).then(res => {
-        this.getUserInfo().then(res => {
-          this.$router.push({
-            name: 'home'
+      // 获取token,并设置到cookie
+      this.handleLogin({ userName, password }).then(errMsg => {
+        // 获取token失败，抛出错误信息
+        if (errMsg) {
+          this.$Message.error(errMsg)
+        } else {
+          // 获取用户信息
+          this.getUserInfo().then(res => {
+            this.$router.push({
+              name: 'home'
+            })
           })
-        })
+        }
       })
     }
   }

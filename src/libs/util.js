@@ -119,7 +119,7 @@ export const getNewTagList = (list, newRoute) => {
 }
 
 /**
- * @param {*} access 用户权限数组，如 ['super_admin', 'admin']
+ * @param {*} access 用户权限数组
  * @param {*} route 路由列表
  */
 const hasAccess = (access, route) => {
@@ -137,8 +137,10 @@ const hasAccess = (access, route) => {
 export const canTurnTo = (name, access, routes) => {
   const routePermissionJudge = (list) => {
     return list.some(item => {
+      // 带子路由
       if (item.children && item.children.length) {
         return routePermissionJudge(item.children)
+      // 不带子路由
       } else if (item.name === name) {
         return hasAccess(access, item)
       }

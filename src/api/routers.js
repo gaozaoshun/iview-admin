@@ -1,11 +1,8 @@
 import axios from '@/libs/api.request'
 
-export const getRouterReq = (access) => {
+export const getRouters = () => {
   return axios.request({
-    url: 'get_router',
-    params: {
-      access
-    },
+    url: '/api/v1/routes',
     method: 'get'
   })
 }

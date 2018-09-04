@@ -12,19 +12,16 @@ export const login = ({ userName, password }) => {
   })
 }
 
-export const getUserInfo = (token) => {
+export const getUserInfo = () => {
   return axios.request({
-    url: 'get_info',
-    params: {
-      token
-    },
+    url: '/api/v1/userInfo',
     method: 'get'
   })
 }
 
-export const logout = (token) => {
+export const logout = () => {
   return axios.request({
-    url: 'logout',
+    url: '/api/v1/logout',
     method: 'post'
   })
 }

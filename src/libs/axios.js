@@ -23,6 +23,7 @@ class httpRequest {
     console.log('url', url)
     // 添加请求拦截器
     instance.interceptors.request.use(config => {
+      // 除了login操作外其他都必须带有token参数
       if (!config.url.includes('/login')) {
         config.headers['x-access-token'] = Cookies.get(TOKEN_KEY)
       }

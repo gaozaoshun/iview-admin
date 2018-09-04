@@ -44,6 +44,7 @@ import { getNewTagList, getNextRoute, routeEqual } from '@/libs/util'
 import minLogo from '@/assets/images/logo-min.jpg'
 import maxLogo from '@/assets/images/logo.jpg'
 import './main.less'
+import { endRoutes } from '@/router/routers'
 export default {
   name: 'Main',
   components: {
@@ -90,7 +91,8 @@ export default {
       'setLocal'
     ]),
     ...mapActions([
-      'handleLogin'
+      'handleLogin',
+      'handleGetRouters'
     ]),
     turnToPage (route) {
       let { name, params, query } = {}
@@ -141,6 +143,15 @@ export default {
     }
   },
   mounted () {
+    // 动画缓冲。。。
+    this.$Spin.show()
+    // 加载路由表信息
+    this.handleGetRouters().then(res => {
+      console.log(res)
+      // 注意路由顺序
+      this.$router.addRoutes(res.data).addRoutes(endRoutes)
+      this.$Spin.hide()
+    })
     /**
      * @description 初始化设置面包屑导航和标签导航
      */
@@ -151,27 +162,6 @@ export default {
     this.setBreadCrumb(this.$route.matched)
     // 设置初始语言
     this.setLocal(this.$i18n.locale)
-    // 文档提示
-    this.$Notice.info({
-      title: '想快速上手，去看文档吧',
-      duration: 0,
-      render: (h) => {
-        return h('p', {
-          style: {
-            fontSize: '13px'
-          }
-        }, [
-          '点击',
-          h('a', {
-            attrs: {
-              href: 'https://lison16.github.io/iview-admin-doc/#/',
-              target: '_blank'
-            }
-          }, 'iview-admin2.0文档'),
-          '快速查看'
-        ])
-      }
-    })
   }
 }
 </script>

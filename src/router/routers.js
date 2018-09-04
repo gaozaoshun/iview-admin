@@ -10,40 +10,69 @@ import parentView from '@/components/parent-view'
  *  icon: (-) 该页面在左侧菜单、面包屑和标签导航处显示的图标，如果是自定义图标，需要在图标名称前加下划线'_'
  * }
  */
-
-export default [
-  {
-    path: '/login',
-    name: 'login',
-    meta: {
-      title: 'Login - 登录',
-      hideInMenu: true
-    },
-    component: () => import('@/view/login/login.vue')
+// 不在菜单上的路由列表
+const normalRoutes = [{
+  path: '/login',
+  name: 'login',
+  meta: {
+    title: 'Login - 登录',
+    hideInMenu: true
   },
-  {
-    path: '/',
-    name: '_home',
-    redirect: '/home',
-    component: Main,
+  component: () =>
+    import('@/view/login/login.vue')
+}, ]
+// 初始化菜单路由列表
+const initRoutes = [{
+  path: '/',
+  name: '_home',
+  redirect: '/home',
+  component: Main,
+  meta: {
+    hideInMenu: true,
+    notCache: true
+  },
+  children: [{
+    path: '/home',
+    name: 'home',
     meta: {
       hideInMenu: true,
+      title: '首页',
       notCache: true
     },
-    children: [
-      {
-        path: '/home',
-        name: 'home',
-        meta: {
-          hideInMenu: true,
-          title: '首页',
-          notCache: true
-        },
-        component: () => import('@/view/single-page/home')
-      }
-    ]
+    component: () =>
+      import('@/view/single-page/home')
+  }]
+}]
+// 拼接到动态路由列表后面 - 错误页面
+export const endRoutes = [{
+    path: '/401',
+    name: 'error_401',
+    meta: {
+      hideInMenu: true
+    },
+    component: () =>
+      import('@/view/error-page/401.vue')
   },
   {
+    path: '/500',
+    name: 'error_500',
+    meta: {
+      hideInMenu: true
+    },
+    component: () =>
+      import('@/view/error-page/500.vue')
+  },
+  {
+    path: '*',
+    name: 'error_404',
+    meta: {
+      hideInMenu: true
+    },
+    component: () =>
+      import('@/view/error-page/404.vue')
+  }
+]
+export default [{
     path: '',
     name: 'doc',
     meta: {
@@ -56,17 +85,16 @@ export default [
     path: '/join',
     name: 'join',
     component: Main,
-    children: [
-      {
-        path: 'join_page',
-        name: 'join_page',
-        meta: {
-          icon: '_qq',
-          title: 'QQ群'
-        },
-        component: () => import('@/view/join-page.vue')
-      }
-    ]
+    children: [{
+      path: 'join_page',
+      name: 'join_page',
+      meta: {
+        icon: '_qq',
+        title: 'QQ群'
+      },
+      component: () =>
+        import('@/view/join-page.vue')
+    }]
   },
   {
     path: '/components',
@@ -76,15 +104,15 @@ export default [
       title: '组件'
     },
     component: Main,
-    children: [
-      {
+    children: [{
         path: 'count_to_page',
         name: 'count_to_page',
         meta: {
           icon: 'md-trending-up',
           title: '数字渐变'
         },
-        component: () => import('@/view/components/count-to/count-to.vue')
+        component: () =>
+          import('@/view/components/count-to/count-to.vue')
       },
       {
         path: 'tables_page',
@@ -93,7 +121,8 @@ export default [
           icon: 'md-grid',
           title: '多功能表格'
         },
-        component: () => import('@/view/components/tables/tables.vue')
+        component: () =>
+          import('@/view/components/tables/tables.vue')
       },
       {
         path: 'split_pane_page',
@@ -102,7 +131,8 @@ export default [
           icon: 'md-pause',
           title: '分割窗口'
         },
-        component: () => import('@/view/components/split-pane/split-pane.vue')
+        component: () =>
+          import('@/view/components/split-pane/split-pane.vue')
       },
       {
         path: 'markdown_page',
@@ -111,7 +141,8 @@ export default [
           icon: 'logo-markdown',
           title: 'Markdown编辑器'
         },
-        component: () => import('@/view/components/markdown/markdown.vue')
+        component: () =>
+          import('@/view/components/markdown/markdown.vue')
       },
       {
         path: 'editor_page',
@@ -120,7 +151,8 @@ export default [
           icon: 'ios-create',
           title: '富文本编辑器'
         },
-        component: () => import('@/view/components/editor/editor.vue')
+        component: () =>
+          import('@/view/components/editor/editor.vue')
       },
       {
         path: 'icons_page',
@@ -129,7 +161,8 @@ export default [
           icon: '_bear',
           title: '自定义图标'
         },
-        component: () => import('@/view/components/icons/icons.vue')
+        component: () =>
+          import('@/view/components/icons/icons.vue')
       }
     ]
   },
@@ -141,15 +174,15 @@ export default [
       title: '数据上传'
     },
     component: Main,
-    children: [
-      {
+    children: [{
         path: 'update_table_page',
         name: 'update_table_page',
         meta: {
           icon: 'ios-document',
           title: '上传Csv'
         },
-        component: () => import('@/view/update/update-table.vue')
+        component: () =>
+          import('@/view/update/update-table.vue')
       },
       {
         path: 'update_paste_page',
@@ -158,7 +191,8 @@ export default [
           icon: 'md-clipboard',
           title: '粘贴表格数据'
         },
-        component: () => import('@/view/update/update-paste.vue')
+        component: () =>
+          import('@/view/update/update-paste.vue')
       }
     ]
   },
@@ -170,15 +204,15 @@ export default [
       title: 'EXCEL导入导出'
     },
     component: Main,
-    children: [
-      {
+    children: [{
         path: 'upload-excel',
         name: 'upload-excel',
         meta: {
           icon: 'md-add',
           title: '导入EXCEL'
         },
-        component: () => import('@/view/excel/upload-excel.vue')
+        component: () =>
+          import('@/view/excel/upload-excel.vue')
       },
       {
         path: 'export-excel',
@@ -187,7 +221,8 @@ export default [
           icon: 'md-download',
           title: '导出EXCEL'
         },
-        component: () => import('@/view/excel/export-excel.vue')
+        component: () =>
+          import('@/view/excel/export-excel.vue')
       }
     ]
   },
@@ -198,17 +233,16 @@ export default [
       hide: true
     },
     component: Main,
-    children: [
-      {
-        path: 'tools_methods_page',
-        name: 'tools_methods_page',
-        meta: {
-          icon: 'ios-hammer',
-          title: '工具方法'
-        },
-        component: () => import('@/view/tools-methods/tools-methods.vue')
-      }
-    ]
+    children: [{
+      path: 'tools_methods_page',
+      name: 'tools_methods_page',
+      meta: {
+        icon: 'ios-hammer',
+        title: '工具方法'
+      },
+      component: () =>
+        import('@/view/tools-methods/tools-methods.vue')
+    }]
   },
   {
     path: '/directive',
@@ -217,17 +251,16 @@ export default [
       hide: true
     },
     component: Main,
-    children: [
-      {
-        path: 'directive_page',
-        name: 'directive_page',
-        meta: {
-          icon: 'ios-navigate',
-          title: '指令'
-        },
-        component: () => import('@/view/directive/directive.vue')
-      }
-    ]
+    children: [{
+      path: 'directive_page',
+      name: 'directive_page',
+      meta: {
+        icon: 'ios-navigate',
+        title: '指令'
+      },
+      component: () =>
+        import('@/view/directive/directive.vue')
+    }]
   },
   {
     path: '/multilevel',
@@ -237,15 +270,15 @@ export default [
       title: '多级菜单'
     },
     component: Main,
-    children: [
-      {
+    children: [{
         path: 'level_2_1',
         name: 'level_2_1',
         meta: {
           icon: 'md-funnel',
           title: '二级-1'
         },
-        component: () => import('@/view/multilevel/level-2-1.vue')
+        component: () =>
+          import('@/view/multilevel/level-2-1.vue')
       },
       {
         path: 'level_2_2',
@@ -257,17 +290,16 @@ export default [
           title: '二级-2'
         },
         component: parentView,
-        children: [
-          {
-            path: 'level_2_2_1',
-            name: 'level_2_2_1',
-            meta: {
-              icon: 'md-funnel',
-              title: '三级'
-            },
-            component: () => import('@/view/multilevel/level-2-2/level-3-1.vue')
-          }
-        ]
+        children: [{
+          path: 'level_2_2_1',
+          name: 'level_2_2_1',
+          meta: {
+            icon: 'md-funnel',
+            title: '三级'
+          },
+          component: () =>
+            import('@/view/multilevel/level-2-2/level-3-1.vue')
+        }]
       },
       {
         path: 'level_2_3',
@@ -276,7 +308,8 @@ export default [
           icon: 'md-funnel',
           title: '二级-3'
         },
-        component: () => import('@/view/multilevel/level-2-3.vue')
+        component: () =>
+          import('@/view/multilevel/level-2-3.vue')
       },
     ]
   },
@@ -287,15 +320,15 @@ export default [
       hideInMenu: true
     },
     component: Main,
-    children: [
-      {
+    children: [{
         path: 'params/:id',
         name: 'params',
         meta: {
           icon: 'md-flower',
           title: '动态路由'
         },
-        component: () => import('@/view/argu-page/params.vue')
+        component: () =>
+          import('@/view/argu-page/params.vue')
       },
       {
         path: 'query',
@@ -304,32 +337,12 @@ export default [
           icon: 'md-flower',
           title: '带参路由'
         },
-        component: () => import('@/view/argu-page/query.vue')
+        component: () =>
+          import('@/view/argu-page/query.vue')
       }
     ]
   },
-  {
-    path: '/401',
-    name: 'error_401',
-    meta: {
-      hideInMenu: true
-    },
-    component: () => import('@/view/error-page/401.vue')
-  },
-  {
-    path: '/500',
-    name: 'error_500',
-    meta: {
-      hideInMenu: true
-    },
-    component: () => import('@/view/error-page/500.vue')
-  },
-  {
-    path: '*',
-    name: 'error_404',
-    meta: {
-      hideInMenu: true
-    },
-    component: () => import('@/view/error-page/404.vue')
-  }
+
 ]
+
+export const routes = normalRoutes.concat(initRoutes)
