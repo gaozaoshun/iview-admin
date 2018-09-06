@@ -1,12 +1,16 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import {routes} from './routers'
+import routes from './routers'
 import store from '@/store'
 import iView from 'iview'
-import { getToken, canTurnTo } from '@/libs/util'
+import {
+  getToken,
+  canTurnTo
+} from '@/libs/util'
+import Main from '@/view/main'
 
 Vue.use(Router)
-const router = new Router({
+let router = new Router({
   routes,
   mode: 'history'
 })
@@ -29,12 +33,27 @@ router.beforeEach((to, from, next) => {
       name: 'home' // 跳转到home页
     })
   } else {
-    // 访问页面权限检测
-    store.dispatch('getUserInfo').then(user => {
-      // 拉取用户信息，通过用户权限和跳转的页面的name来判断是否有权限访问;access必须是一个数组，如：['super_admin'] ['super_admin', 'admin']
-      if (canTurnTo(to.name, user.access, routes)) next() // 有权限，可访问
-      else next({ replace: true, name: 'error_401' }) // 无权限，重定向到401页面
-    })
+    // vuex是否存在所有路由列表：没有则获取
+    if (store.state.routes.routes.length === 0) {
+      store.dispatch('handleGetRouters').then(routes => {
+        router.addRoutes(routes)
+        next({ ...to,
+          replace: true
+        }) // hack方法
+      })
+    } else {
+      // 访问页面权限检测
+      store.dispatch('getUserInfo').then(user => {
+        // 拉取用户信息，通过用户权限和跳转的页面的name来判断是否有权限访问;access必须是一个数组，如：['super_admin'] ['super_admin', 'admin']
+        if (canTurnTo(to.name, user.access, routes)) next() // 有权限，可访问
+        else {
+          next({
+            replace: true,
+            name: 'error_401'
+          })
+        } // 无权限，重定向到401页面
+      })
+    }
   }
 })
 

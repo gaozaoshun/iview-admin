@@ -44,7 +44,7 @@ import { getNewTagList, getNextRoute, routeEqual } from '@/libs/util'
 import minLogo from '@/assets/images/logo-min.jpg'
 import maxLogo from '@/assets/images/logo.jpg'
 import './main.less'
-import { endRoutes } from '@/router/routers'
+
 export default {
   name: 'Main',
   components: {
@@ -138,20 +138,12 @@ export default {
   },
   watch: {
     '$route' (newRoute) {
+      console.log('mainPage', newRoute)
       this.setBreadCrumb(newRoute.matched)
       this.setTagNavList(getNewTagList(this.tagNavList, newRoute))
     }
   },
   mounted () {
-    // 动画缓冲。。。
-    this.$Spin.show()
-    // 加载路由表信息
-    this.handleGetRouters().then(res => {
-      console.log(res)
-      // 注意路由顺序
-      this.$router.addRoutes(res.data).addRoutes(endRoutes)
-      this.$Spin.hide()
-    })
     /**
      * @description 初始化设置面包屑导航和标签导航
      */

@@ -5,6 +5,7 @@
         <Card title="iview-admin交流QQ群" shadow>
           <img class="qq-group-img" :src="qqFans" alt="">
           <p class="qq-group-intro">本群为使用iview-admin或者对iview-admin感兴趣的开发者提供交流平台，在这里，解决你开发中的疑惑，共同进步。</p>
+          <button @click="topush">到文档页</button>
         </Card>
       </i-col>
     </Row>
@@ -18,6 +19,11 @@ export default {
   data () {
     return {
       qqFans
+    }
+  },
+  methods: {
+    topush () {
+      this.$router.push('/components/count_to_page')
     }
   }
 }
