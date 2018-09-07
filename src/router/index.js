@@ -1,17 +1,17 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import routes from './routers'
+import {constantRoutes, endRoutes} from './routers'
 import store from '@/store'
 import iView from 'iview'
+
 import {
   getToken,
   canTurnTo
 } from '@/libs/util'
-import Main from '@/view/main'
 
 Vue.use(Router)
 let router = new Router({
-  routes,
+  constantRoutes,
   mode: 'history'
 })
 const LOGIN_PAGE_NAME = 'login'
@@ -34,9 +34,12 @@ router.beforeEach((to, from, next) => {
     })
   } else {
     // vuex是否存在所有路由列表：没有则获取
-    if (store.state.routes.routes.length === 0) {
+    if (store.state.app.routes.length === 0) {
       store.dispatch('handleGetRouters').then(routes => {
+        // 动态添加路由
         router.addRoutes(routes)
+        // 最后必须添加404路由等。
+        router.addRoutes(endRoutes)
         next({ ...to,
           replace: true
         }) // hack方法

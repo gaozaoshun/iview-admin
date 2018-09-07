@@ -64,7 +64,7 @@ export default {
         getUserInfo().then(res => {
           // 设置用户信息
           const data = res.data
-          console.log(data)
+          console.log('用户信息', data)
           commit('setAvator', data.avatar)
           commit('setUserName', data.username)
           commit('setUserId', data.id)
